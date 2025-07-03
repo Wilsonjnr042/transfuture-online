@@ -1,0 +1,1997 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Transfuture Bank - Secure Banking Platform</title>
+    <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
+    <script src="https://kit.fontawesome.com/a076d05399.js" crossorigin="anonymous"></script>
+    <style>
+        :root {
+            --primary: #1a3a8f;
+            --primary-dark: #0c1f5e;
+            --secondary: #00a86b;
+            --secondary-dark: #007a4d;
+            --accent: #ff6b35;
+            --light: #f8f9fa;
+            --dark: #212529;
+            --gray: #6c757d;
+            --light-gray: #e9ecef;
+            --danger: #dc3545;
+            --success: #28a745;
+            --warning: #ffc107;
+            --card-gradient: linear-gradient(135deg, var(--primary), #2a4da3);
+            --shadow: 0 4px 12px rgba(0,0,0,0.1);
+            --transition: all 0.3s ease;
+        }
+        
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+            font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+        }
+        
+        body {
+            background-color: #f0f2f5;
+            color: var(--dark);
+            min-height: 100vh;
+            position: relative;
+        }
+        
+        .container {
+            max-width: 1200px;
+            margin: 0 auto;
+            padding: 0 15px;
+        }
+        
+        /* Auth Pages */
+        .auth-container {
+            display: flex;
+            min-height: 100vh;
+        }
+        
+        .auth-left {
+            flex: 1;
+            background: var(--card-gradient);
+            color: white;
+            padding: 2rem;
+            display: flex;
+            flex-direction: column;
+            justify-content: center;
+            align-items: center;
+            text-align: center;
+        }
+        
+        .auth-left img {
+            width: 120px;
+            margin-bottom: 2rem;
+        }
+        
+        .auth-left h1 {
+            font-size: 2.5rem;
+            margin-bottom: 1rem;
+        }
+        
+        .auth-left p {
+            font-size: 1.1rem;
+            max-width: 500px;
+            line-height: 1.6;
+        }
+        
+        .auth-right {
+            flex: 1;
+            background: white;
+            display: flex;
+            flex-direction: column;
+            justify-content: center;
+            padding: 3rem;
+        }
+        
+        .auth-form {
+            max-width: 450px;
+            width: 100%;
+            margin: 0 auto;
+        }
+        
+        .auth-form h2 {
+            color: var(--primary);
+            margin-bottom: 1.5rem;
+            font-size: 1.8rem;
+        }
+        
+        .form-group {
+            margin-bottom: 1.5rem;
+        }
+        
+        .form-group label {
+            display: block;
+            margin-bottom: 0.5rem;
+            font-weight: 500;
+            color: var(--dark);
+        }
+        
+        .form-control {
+            width: 100%;
+            padding: 0.75rem 1rem;
+            border: 1px solid #ced4da;
+            border-radius: 4px;
+            font-size: 1rem;
+            transition: var(--transition);
+        }
+        
+        .form-control:focus {
+            border-color: var(--primary);
+            outline: none;
+            box-shadow: 0 0 0 0.2rem rgba(26, 58, 143, 0.25);
+        }
+        
+        .btn {
+            display: inline-block;
+            font-weight: 500;
+            text-align: center;
+            vertical-align: middle;
+            cursor: pointer;
+            user-select: none;
+            border: 1px solid transparent;
+            padding: 0.75rem 1.5rem;
+            font-size: 1rem;
+            border-radius: 4px;
+            transition: var(--transition);
+        }
+        
+        .btn-primary {
+            background-color: var(--primary);
+            color: white;
+        }
+        
+        .btn-primary:hover {
+            background-color: var(--primary-dark);
+        }
+        
+        .btn-block {
+            display: block;
+            width: 100%;
+        }
+        
+        .text-center {
+            text-align: center;
+        }
+        
+        .mt-3 {
+            margin-top: 1rem;
+        }
+        
+        .link {
+            color: var(--primary);
+            text-decoration: none;
+            font-weight: 500;
+        }
+        
+        .link:hover {
+            text-decoration: underline;
+        }
+        
+        /* Dashboard Layout */
+        .app-container {
+            display: flex;
+            min-height: 100vh;
+        }
+        
+        /* Sidebar */
+        .sidebar {
+            width: 250px;
+            background: var(--primary-dark);
+            color: white;
+            padding: 1.5rem 0;
+            position: fixed;
+            height: 100vh;
+            overflow-y: auto;
+            transition: var(--transition);
+        }
+        
+        .sidebar-header {
+            padding: 0 1.5rem 1.5rem;
+            border-bottom: 1px solid rgba(255,255,255,0.1);
+        }
+        
+        .sidebar-header img {
+            width: 140px;
+        }
+        
+        .nav {
+            list-style: none;
+            padding: 1rem 0;
+        }
+        
+        .nav-item {
+            margin-bottom: 0.25rem;
+        }
+        
+        .nav-link {
+            display: flex;
+            align-items: center;
+            padding: 0.75rem 1.5rem;
+            color: rgba(255,255,255,0.8);
+            text-decoration: none;
+            transition: var(--transition);
+        }
+        
+        .nav-link:hover, .nav-link.active {
+            background: rgba(255,255,255,0.1);
+            color: white;
+        }
+        
+        .nav-link i {
+            margin-right: 0.75rem;
+            font-size: 1.2rem;
+        }
+        
+        /* Main Content */
+        .main-content {
+            flex: 1;
+            margin-left: 250px;
+        }
+        
+        /* Topbar */
+        .topbar {
+            background: white;
+            box-shadow: var(--shadow);
+            padding: 1rem 2rem;
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            position: sticky;
+            top: 0;
+            z-index: 100;
+        }
+        
+        .search-bar {
+            position: relative;
+            max-width: 400px;
+            width: 100%;
+        }
+        
+        .search-bar input {
+            width: 100%;
+            padding: 0.75rem 1rem 0.75rem 3rem;
+            border: 1px solid var(--light-gray);
+            border-radius: 4px;
+            background: var(--light);
+        }
+        
+        .search-bar i {
+            position: absolute;
+            left: 1rem;
+            top: 50%;
+            transform: translateY(-50%);
+            color: var(--gray);
+        }
+        
+        .user-menu {
+            display: flex;
+            align-items: center;
+        }
+        
+        .user-info {
+            margin-right: 1rem;
+            text-align: right;
+        }
+        
+        .user-info .name {
+            font-weight: 600;
+        }
+        
+        .user-info .role {
+            font-size: 0.85rem;
+            color: var(--gray);
+        }
+        
+        .avatar {
+            width: 45px;
+            height: 45px;
+            border-radius: 50%;
+            background: var(--card-gradient);
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            color: white;
+            font-weight: 600;
+            cursor: pointer;
+        }
+        
+        /* Dashboard Content */
+        .content {
+            padding: 2rem;
+        }
+        
+        .welcome-banner {
+            background: var(--card-gradient);
+            color: white;
+            border-radius: 8px;
+            padding: 2rem;
+            margin-bottom: 2rem;
+            box-shadow: var(--shadow);
+        }
+        
+        .welcome-banner h1 {
+            font-size: 1.8rem;
+            margin-bottom: 0.5rem;
+        }
+        
+        .welcome-banner p {
+            opacity: 0.9;
+            max-width: 600px;
+        }
+        
+        .stats-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(280px, 1fr));
+            gap: 1.5rem;
+            margin-bottom: 2rem;
+        }
+        
+        .stat-card {
+            background: white;
+            border-radius: 8px;
+            padding: 1.5rem;
+            box-shadow: var(--shadow);
+            display: flex;
+            align-items: center;
+        }
+        
+        .stat-icon {
+            width: 60px;
+            height: 60px;
+            border-radius: 12px;
+            background: rgba(26, 58, 143, 0.1);
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            margin-right: 1.5rem;
+        }
+        
+        .stat-icon i {
+            font-size: 1.8rem;
+            color: var(--primary);
+        }
+        
+        .stat-info h3 {
+            font-size: 1.5rem;
+            margin-bottom: 0.25rem;
+        }
+        
+        .stat-info p {
+            color: var(--gray);
+            font-size: 0.9rem;
+        }
+        
+        .chart-container {
+            background: white;
+            border-radius: 8px;
+            padding: 1.5rem;
+            box-shadow: var(--shadow);
+            margin-bottom: 2rem;
+        }
+        
+        .chart-header {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            margin-bottom: 1.5rem;
+        }
+        
+        .chart-header h2 {
+            color: var(--dark);
+            font-size: 1.3rem;
+        }
+        
+        /* Quick Actions */
+        .quick-actions {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(200px, 1fr));
+            gap: 1rem;
+            margin-bottom: 2rem;
+        }
+        
+        .action-card {
+            background: white;
+            border-radius: 8px;
+            padding: 1.5rem;
+            text-align: center;
+            box-shadow: var(--shadow);
+            cursor: pointer;
+            transition: var(--transition);
+        }
+        
+        .action-card:hover {
+            transform: translateY(-5px);
+            box-shadow: 0 10px 20px rgba(0,0,0,0.1);
+        }
+        
+        .action-card i {
+            font-size: 2rem;
+            color: var(--primary);
+            margin-bottom: 1rem;
+        }
+        
+        .action-card h3 {
+            font-size: 1.1rem;
+            margin-bottom: 0.5rem;
+        }
+        
+        .action-card p {
+            color: var(--gray);
+            font-size: 0.9rem;
+        }
+        
+        /* Transactions */
+        .transactions-container {
+            background: white;
+            border-radius: 8px;
+            padding: 1.5rem;
+            box-shadow: var(--shadow);
+        }
+        
+        .transaction-header {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            margin-bottom: 1.5rem;
+        }
+        
+        .transaction-header h2 {
+            font-size: 1.3rem;
+            color: var(--dark);
+        }
+        
+        .transaction-filters {
+            display: flex;
+            gap: 0.5rem;
+        }
+        
+        .filter-btn {
+            padding: 0.5rem 1rem;
+            border: 1px solid var(--light-gray);
+            border-radius: 4px;
+            background: white;
+            cursor: pointer;
+            font-size: 0.9rem;
+        }
+        
+        .filter-btn.active {
+            background: var(--primary);
+            color: white;
+            border-color: var(--primary);
+        }
+        
+        .transaction-list {
+            list-style: none;
+        }
+        
+        .transaction-item {
+            display: flex;
+            justify-content: space-between;
+            padding: 1rem 0;
+            border-bottom: 1px solid var(--light-gray);
+        }
+        
+        .transaction-item:last-child {
+            border-bottom: none;
+        }
+        
+        .transaction-info {
+            display: flex;
+            align-items: center;
+        }
+        
+        .transaction-icon {
+            width: 40px;
+            height: 40px;
+            border-radius: 50%;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            margin-right: 1rem;
+        }
+        
+        .credit .transaction-icon {
+            background: rgba(40, 167, 69, 0.15);
+            color: var(--success);
+        }
+        
+        .debit .transaction-icon {
+            background: rgba(220, 53, 69, 0.15);
+            color: var(--danger);
+        }
+        
+        .transaction-details h3 {
+            font-size: 1rem;
+            margin-bottom: 0.25rem;
+        }
+        
+        .transaction-details p {
+            color: var(--gray);
+            font-size: 0.85rem;
+        }
+        
+        .transaction-amount {
+            font-weight: 600;
+            font-size: 1.1rem;
+        }
+        
+        .credit .transaction-amount {
+            color: var(--success);
+        }
+        
+        .debit .transaction-amount {
+            color: var(--danger);
+        }
+        
+        /* Forms */
+        .form-container {
+            background: white;
+            border-radius: 8px;
+            padding: 2rem;
+            box-shadow: var(--shadow);
+            max-width: 600px;
+            margin: 0 auto;
+        }
+        
+        .form-header {
+            margin-bottom: 1.5rem;
+            text-align: center;
+        }
+        
+        .form-header h2 {
+            color: var(--primary);
+            margin-bottom: 0.5rem;
+        }
+        
+        .form-footer {
+            margin-top: 1.5rem;
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+        }
+        
+        /* Admin Panel */
+        .admin-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(300px, 1fr));
+            gap: 1.5rem;
+            margin-bottom: 2rem;
+        }
+        
+        .admin-card {
+            background: white;
+            border-radius: 8px;
+            padding: 1.5rem;
+            box-shadow: var(--shadow);
+        }
+        
+        .admin-card h3 {
+            margin-bottom: 1rem;
+            color: var(--primary);
+            border-bottom: 1px solid var(--light-gray);
+            padding-bottom: 0.5rem;
+        }
+        
+        .user-list {
+            list-style: none;
+        }
+        
+        .user-item {
+            display: flex;
+            align-items: center;
+            padding: 0.75rem 0;
+            border-bottom: 1px solid var(--light-gray);
+        }
+        
+        .user-item:last-child {
+            border-bottom: none;
+        }
+        
+        .user-avatar {
+            width: 40px;
+            height: 40px;
+            border-radius: 50%;
+            background: var(--card-gradient);
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            color: white;
+            font-weight: 600;
+            margin-right: 1rem;
+        }
+        
+        .user-details {
+            flex: 1;
+        }
+        
+        .user-details .name {
+            font-weight: 600;
+            margin-bottom: 0.15rem;
+        }
+        
+        .user-details .email {
+            font-size: 0.85rem;
+            color: var(--gray);
+        }
+        
+        .user-balance {
+            font-weight: 600;
+            color: var(--primary);
+        }
+        
+        .admin-actions {
+            display: flex;
+            gap: 0.5rem;
+        }
+        
+        .btn-sm {
+            padding: 0.35rem 0.75rem;
+            font-size: 0.85rem;
+        }
+        
+        .btn-danger {
+            background: var(--danger);
+            color: white;
+        }
+        
+        .btn-danger:hover {
+            background: #bd2130;
+        }
+        
+        .btn-success {
+            background: var(--success);
+            color: white;
+        }
+        
+        .btn-success:hover {
+            background: #218838;
+        }
+        
+        /* Settings */
+        .settings-grid {
+            display: grid;
+            grid-template-columns: 250px 1fr;
+            gap: 2rem;
+        }
+        
+        .settings-menu {
+            background: white;
+            border-radius: 8px;
+            box-shadow: var(--shadow);
+            padding: 1.5rem 0;
+        }
+        
+        .settings-menu .nav-link {
+            color: var(--dark);
+            padding: 0.75rem 1.5rem;
+        }
+        
+        .settings-menu .nav-link:hover, 
+        .settings-menu .nav-link.active {
+            background: rgba(26, 58, 143, 0.05);
+            color: var(--primary);
+        }
+        
+        .settings-content {
+            background: white;
+            border-radius: 8px;
+            box-shadow: var(--shadow);
+            padding: 2rem;
+        }
+        
+        .avatar-upload {
+            display: flex;
+            align-items: center;
+            margin-bottom: 2rem;
+        }
+        
+        .avatar-large {
+            width: 100px;
+            height: 100px;
+            border-radius: 50%;
+            background: var(--card-gradient);
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            color: white;
+            font-size: 2rem;
+            font-weight: 600;
+            margin-right: 1.5rem;
+        }
+        
+        .avatar-actions {
+            display: flex;
+            gap: 0.5rem;
+        }
+        
+        .security-log {
+            display: flex;
+            align-items: center;
+            padding: 1rem 0;
+            border-bottom: 1px solid var(--light-gray);
+        }
+        
+        .security-log:last-child {
+            border-bottom: none;
+        }
+        
+        .log-icon {
+            width: 40px;
+            height: 40px;
+            border-radius: 50%;
+            background: rgba(26, 58, 143, 0.1);
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            color: var(--primary);
+            margin-right: 1rem;
+        }
+        
+        .log-details {
+            flex: 1;
+        }
+        
+        .log-details h4 {
+            margin-bottom: 0.25rem;
+        }
+        
+        .log-details p {
+            color: var(--gray);
+            font-size: 0.9rem;
+        }
+        
+        .log-time {
+            color: var(--gray);
+            font-size: 0.85rem;
+        }
+        
+        /* Responsive */
+        @media (max-width: 992px) {
+            .sidebar {
+                width: 70px;
+            }
+            
+            .sidebar .logo-text,
+            .sidebar .nav-text {
+                display: none;
+            }
+            
+            .sidebar-header {
+                padding: 1rem;
+                text-align: center;
+            }
+            
+            .sidebar-header img {
+                width: 40px;
+            }
+            
+            .nav-link {
+                justify-content: center;
+                padding: 1rem;
+            }
+            
+            .nav-link i {
+                margin-right: 0;
+                font-size: 1.5rem;
+            }
+            
+            .main-content {
+                margin-left: 70px;
+            }
+            
+            .user-info {
+                display: none;
+            }
+        }
+        
+        @media (max-width: 768px) {
+            .auth-container {
+                flex-direction: column;
+            }
+            
+            .auth-left {
+                padding: 2rem 1rem;
+            }
+            
+            .auth-right {
+                padding: 2rem 1rem;
+            }
+            
+            .settings-grid {
+                grid-template-columns: 1fr;
+            }
+        }
+        
+        @media (max-width: 576px) {
+            .topbar {
+                padding: 1rem;
+            }
+            
+            .search-bar {
+                max-width: 200px;
+            }
+            
+            .content {
+                padding: 1.5rem 1rem;
+            }
+            
+            .welcome-banner {
+                padding: 1.5rem;
+            }
+        }
+        
+        /* Page transitions */
+        .page {
+            display: none;
+        }
+        
+        .page.active {
+            display: block;
+        }
+        
+        /* Toast notifications */
+        .toast {
+            position: fixed;
+            top: 20px;
+            right: 20px;
+            background: white;
+            color: var(--dark);
+            padding: 1rem 1.5rem;
+            border-radius: 4px;
+            box-shadow: 0 4px 12px rgba(0,0,0,0.15);
+            display: flex;
+            align-items: center;
+            z-index: 1000;
+            transform: translateX(120%);
+            transition: transform 0.3s ease;
+        }
+        
+        .toast.show {
+            transform: translateX(0);
+        }
+        
+        .toast i {
+            margin-right: 0.75rem;
+            font-size: 1.2rem;
+        }
+        
+        .toast.success i {
+            color: var(--success);
+        }
+        
+        .toast.error i {
+            color: var(--danger);
+        }
+        
+        .toast-content {
+            flex: 1;
+        }
+        
+        .toast-close {
+            margin-left: 1rem;
+            cursor: pointer;
+            opacity: 0.7;
+        }
+        
+        /* Loading spinner */
+        .spinner {
+            display: inline-block;
+            width: 1.5rem;
+            height: 1.5rem;
+            border: 3px solid rgba(255,255,255,0.3);
+            border-radius: 50%;
+            border-top-color: white;
+            animation: spin 1s linear infinite;
+        }
+        
+        @keyframes spin {
+            to { transform: rotate(360deg); }
+        }
+        
+        /* Print styles */
+        @media print {
+            .sidebar, .topbar, .btn {
+                display: none !important;
+            }
+            
+            .main-content {
+                margin-left: 0 !important;
+            }
+            
+            .content {
+                padding: 0 !important;
+            }
+        }
+    </style>
+</head>
+<body>
+    <!-- Auth Screens -->
+    <div id="login-page" class="page active">
+        <div class="auth-container">
+            <div class="auth-left">
+                <img src="data:image/svg+xml;base64,PHN2ZyB4bWxucz0iaHR0cDovL3d3dy53My5vcmcvMjAwMC9zdmciIHdpZHRoPSIxMDAiIGhlaWdodD0iMTAwIiB2aWV3Qm94PSIwIDAgMjQgMjQiIGZpbGw9Im5vbmUiIHN0cm9rZT0id2hpdGUiIHN0cm9rZS13aWR0aD0iMiIgc3Ryb2tlLWxpbmVjYXA9InJvdW5kIiBzdHJva2UtbGluZWpvaW49InJvdW5kIj48cGF0aCBkPSJNMiA4aDE3YTUgNSAwIDAgMSA1IDV2MGE1IDUgMCAwIDEtNSA1SDVhNSA1IDAgMCAxLTUtNVY1YTIgMiAwIDAgMSAyLTJoMTlhMiAyIDAgMCAxIDIgMnYzIj48L3BhdGg+PHBhdGggZD0iTTIgMTJoMyIgc3Ryb2tlLXdpZHRoPSIyIj48L3BhdGg+PHBhdGggZD0iTTYgMTZ2NCIgc3Ryb2tlLXdpZHRoPSIyIj48L3BhdGg+PHBhdGggZD0iTTEzIDE2djQiIHN0cm9rZS13aWR0aD0iMiI+PC9wYXRoPjxwYXRoIGQ9Ik0xMCAxMnY4IiBzdHJva2Utd2lkdGg9IjIiPjwvcGF0aD48cGF0aCBkPSJNMjAgMTZ2NCIgc3Ryb2tlLXdpZHRoPSIyIj48L3BhdGg+PHBhdGggZD0iTTE3IDEydjgiIHN0cm9rZS13aWR0aD0iMiI+PC9wYXRoPjwvc3ZnPg==" alt="Transfuture Bank">
+                <h1>Transfuture Bank</h1>
+                <p>Your gateway to financial innovation. Secure, fast, and reliable banking for the future.</p>
+                <div style="margin-top: 2rem; font-size: 0.9rem; opacity: 0.8;">
+                    <p>Last login: Today, 08:45 AM from Enugu, Nigeria</p>
+                    <p>2-step verification enabled</p>
+                </div>
+            </div>
+            <div class="auth-right">
+                <div class="auth-form">
+                    <h2>Welcome Back</h2>
+                    <p style="margin-bottom: 1.5rem; color: var(--gray);">Sign in to access your account</p>
+                    
+                    <div class="form-group">
+                        <label for="email">Email Address</label>
+                        <input type="email" class="form-control" id="email" placeholder="Enter your email">
+                    </div>
+                    
+                    <div class="form-group">
+                        <label for="password">Password</label>
+                        <input type="password" class="form-control" id="password" placeholder="Enter your password">
+                    </div>
+                    
+                    <div class="form-group" style="display: flex; justify-content: space-between; align-items: center;">
+                        <div>
+                            <input type="checkbox" id="remember">
+                            <label for="remember" style="display: inline; margin-left: 0.5rem;">Remember me</label>
+                        </div>
+                        <a href="#" class="link">Forgot password?</a>
+                    </div>
+                    
+                    <button class="btn btn-primary btn-block" onclick="login()">Sign In</button>
+                    
+                    <div class="mt-3 text-center">
+                        <p>Don't have an account? <a href="#" class="link" onclick="showPage('register-page')">Register now</a></p>
+                    </div>
+                    
+                    <div class="mt-4" style="border-top: 1px solid var(--light-gray); padding-top: 1.5rem; text-align: center;">
+                        <p style="font-size: 0.9rem; color: var(--gray);">
+                            <i class="fas fa-shield-alt"></i> Your security is our priority. All data is encrypted.
+                        </p>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+    
+    <div id="register-page" class="page">
+        <div class="auth-container">
+            <div class="auth-left">
+                <img src="data:image/svg+xml;base64,PHN2ZyB4bWxucz0iaHR0cDovL3d3dy53My5vcmcvMjAwMC9zdmciIHdpZHRoPSIxMDAiIGhlaWdodD0iMTAwIiB2aWV3Qm94PSIwIDAgMjQgMjQiIGZpbGw9Im5vbmUiIHN0cm9rZT0id2hpdGUiIHN0cm9rZS13aWR0aD0iMiIgc3Ryb2tlLWxpbmVjYXA9InJvdW5kIiBzdHJva2UtbGluZWpvaW49InJvdW5kIj48cGF0aCBkPSJNMiA4aDE3YTUgNSAwIDAgMSA1IDV2MGE1IDUgMCAwIDEtNSA1SDVhNSA1IDAgMCAxLTUtNVY1YTIgMiAwIDAgMSAyLTJoMTlhMiAyIDAgMCAxIDIgMnYzIj48L3BhdGg+PHBhdGggZD0iTTIgMTJoMyIgc3Ryb2tlLXdpZHRoPSIyIj48L3BhdGg+PHBhdGggZD0iTTYgMTZ2NCIgc3Ryb2tlLXdpZHRoPSIyIj48L3BhdGg+PHBhdGggZD0iTTEzIDE2djQiIHN0cm9rZS13aWR0aD0iMiI+PC9wYXRoPjxwYXRoIGQ9Ik0xMCAxMnY4IiBzdHJva2Utd2lkdGg9IjIiPjwvcGF0aD48cGF0aCBkPSJNMjAgMTZ2NCIgc3Ryb2tlLXdpZHRoPSIyIj48L3BhdGg+PHBhdGggZD0iTTE3IDEydjgiIHN0cm9rZS13aWR0aD0iMiI+PC9wYXRoPjwvc3ZnPg==" alt="Transfuture Bank">
+                <h1>Join Transfuture Bank</h1>
+                <p>Experience the future of banking with our innovative platform designed for your financial growth.</p>
+                <div style="margin-top: 2rem; font-size: 0.9rem; opacity: 0.8;">
+                    <p><i class="fas fa-check-circle"></i> Zero account fees</p>
+                    <p><i class="fas fa-check-circle"></i> Instant transfers</p>
+                    <p><i class="fas fa-check-circle"></i> 24/7 customer support</p>
+                </div>
+            </div>
+            <div class="auth-right">
+                <div class="auth-form">
+                    <h2>Create Account</h2>
+                    <p style="margin-bottom: 1.5rem; color: var(--gray);">Fill in your details to get started</p>
+                    
+                    <div class="form-group">
+                        <label for="reg-name">Full Name</label>
+                        <input type="text" class="form-control" id="reg-name" placeholder="Enter your full name">
+                    </div>
+                    
+                    <div class="form-group">
+                        <label for="reg-email">Email Address</label>
+                        <input type="email" class="form-control" id="reg-email" placeholder="Enter your email">
+                    </div>
+                    
+                    <div class="form-group">
+                        <label for="reg-password">Password</label>
+                        <input type="password" class="form-control" id="reg-password" placeholder="Create a password">
+                    </div>
+                    
+                    <div class="form-group">
+                        <label for="reg-confirm">Confirm Password</label>
+                        <input type="password" class="form-control" id="reg-confirm" placeholder="Confirm your password">
+                    </div>
+                    
+                    <div class="form-group">
+                        <input type="checkbox" id="terms">
+                        <label for="terms" style="display: inline; margin-left: 0.5rem;">I agree to the <a href="#" class="link">Terms & Conditions</a></label>
+                    </div>
+                    
+                    <button class="btn btn-primary btn-block" onclick="register()">Create Account</button>
+                    
+                    <div class="mt-3 text-center">
+                        <p>Already have an account? <a href="#" class="link" onclick="showPage('login-page')">Sign in</a></p>
+                    </div>
+                    
+                    <div class="mt-4" style="border-top: 1px solid var(--light-gray); padding-top: 1.5rem; text-align: center;">
+                        <p style="font-size: 0.9rem; color: var(--gray);">
+                            <i class="fas fa-lock"></i> Your information is securely encrypted
+                        </p>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+    
+    <!-- Main App -->
+    <div id="app" class="page">
+        <div class="app-container">
+            <!-- Sidebar -->
+            <div class="sidebar">
+                <div class="sidebar-header">
+                    <img src="data:image/svg+xml;base64,PHN2ZyB4bWxucz0iaHR0cDovL3d3dy53My5vcmcvMjAwMC9zdmciIHdpZHRoPSIxNDAiIGhlaWdodD0iNDAiIHZpZXdCb3g9IjAgMCAyNDAgODAiIGZpbGw9Im5vbmUiPjxwYXRoIGQ9Ik0yMCAyMEg2MFY2MEgyMFYyMFoiIGZpbGw9IiNmZmYiPjwvcGF0aD48cGF0aCBkPSJNODAgMjBIMTIwVjYwSDgwVjIwWiIgZmlsbD0iI2ZmZiI+PC9wYXRoPjxwYXRoIGQ9Ik0xNDAgMjBIMTgwVjYwSDE0MFYyMFoiIGZpbGw9IiNmZmYiPjwvcGF0aD48dGV4dCB4PSIyMCIgeT0iNzAiIGZvbnQtZmFtaWx5PSJBcmlhbCIgZm9udC1zaXplPSIyNCIgZmlsbD0id2hpdGUiPlRyYW5zZnV0dXJlIEJhbms8L3RleHQ+PC9zdmc+" alt="Transfuture Bank">
+                </div>
+                
+                <ul class="nav">
+                    <li class="nav-item">
+                        <a href="#" class="nav-link active" onclick="showPage('dashboard-page')">
+                            <i class="fas fa-home"></i>
+                            <span class="nav-text">Dashboard</span>
+                        </a>
+                    </li>
+                    <li class="nav-item">
+                        <a href="#" class="nav-link" onclick="showPage('fund-page')">
+                            <i class="fas fa-wallet"></i>
+                            <span class="nav-text">Fund Account</span>
+                        </a>
+                    </li>
+                    <li class="nav-item">
+                        <a href="#" class="nav-link" onclick="showPage('transfer-page')">
+                            <i class="fas fa-exchange-alt"></i>
+                            <span class="nav-text">Transfer Money</span>
+                        </a>
+                    </li>
+                    <li class="nav-item">
+                        <a href="#" class="nav-link" onclick="showPage('transactions-page')">
+                            <i class="fas fa-history"></i>
+                            <span class="nav-text">Transactions</span>
+                        </a>
+                    </li>
+                    <li class="nav-item">
+                        <a href="#" class="nav-link" onclick="showPage('admin-page')">
+                            <i class="fas fa-user-shield"></i>
+                            <span class="nav-text">Admin Panel</span>
+                        </a>
+                    </li>
+                    <li class="nav-item">
+                        <a href="#" class="nav-link" onclick="showPage('settings-page')">
+                            <i class="fas fa-cog"></i>
+                            <span class="nav-text">Settings</span>
+                        </a>
+                    </li>
+                    <li class="nav-item">
+                        <a href="#" class="nav-link" onclick="logout()">
+                            <i class="fas fa-sign-out-alt"></i>
+                            <span class="nav-text">Sign Out</span>
+                        </a>
+                    </li>
+                </ul>
+            </div>
+            
+            <!-- Main Content -->
+            <div class="main-content">
+                <!-- Topbar -->
+                <div class="topbar">
+                    <div class="search-bar">
+                        <i class="fas fa-search"></i>
+                        <input type="text" placeholder="Search transactions, accounts...">
+                    </div>
+                    
+                    <div class="user-menu">
+                        <div class="user-info">
+                            <div class="name">Ekene Wilson</div>
+                            <div class="role">Premium Account</div>
+                        </div>
+                        <div class="avatar" onclick="showPage('settings-page')">EW</div>
+                    </div>
+                </div>
+                
+                <!-- Dashboard -->
+                <div id="dashboard-page" class="page active">
+                    <div class="content">
+                        <div class="welcome-banner">
+                            <h1>👋 Welcome back, Ekene!</h1>
+                            <p>Your financial future starts now. You've successfully logged in from Enugu, Nigeria.</p>
+                        </div>
+                        
+                        <div class="stats-grid">
+                            <div class="stat-card">
+                                <div class="stat-icon">
+                                    <i class="fas fa-wallet"></i>
+                                </div>
+                                <div class="stat-info">
+                                    <h3>$3,200,000.00</h3>
+                                    <p>Available Balance</p>
+                                </div>
+                            </div>
+                            
+                            <div class="stat-card">
+                                <div class="stat-icon">
+                                    <i class="fas fa-exchange-alt"></i>
+                                </div>
+                                <div class="stat-info">
+                                    <h3>17</h3>
+                                    <p>Transactions This Month</p>
+                                </div>
+                            </div>
+                            
+                            <div class="stat-card">
+                                <div class="stat-icon">
+                                    <i class="fas fa-calendar-check"></i>
+                                </div>
+                                <div class="stat-info">
+                                    <h3>Jul 03, 2025</h3>
+                                    <p>Last Transfer Date</p>
+                                </div>
+                            </div>
+                            
+                            <div class="stat-card">
+                                <div class="stat-icon">
+                                    <i class="fas fa-clock"></i>
+                                </div>
+                                <div class="stat-info">
+                                    <h3>Today, 09:15 AM</h3>
+                                    <p>Last Login</p>
+                                </div>
+                            </div>
+                        </div>
+                        
+                        <div class="quick-actions">
+                            <div class="action-card" onclick="showPage('fund-page')">
+                                <i class="fas fa-plus-circle"></i>
+                                <h3>Fund Account</h3>
+                                <p>Add money to your wallet</p>
+                            </div>
+                            
+                            <div class="action-card" onclick="showPage('transfer-page')">
+                                <i class="fas fa-paper-plane"></i>
+                                <h3>Send Money</h3>
+                                <p>Transfer to other accounts</p>
+                            </div>
+                            
+                            <div class="action-card">
+                                <i class="fas fa-file-invoice-dollar"></i>
+                                <h3>Pay Bills</h3>
+                                <p>Utilities, subscriptions</p>
+                            </div>
+                            
+                            <div class="action-card">
+                                <i class="fas fa-credit-card"></i>
+                                <h3>Cards</h3>
+                                <p>Manage your debit cards</p>
+                            </div>
+                        </div>
+                        
+                        <div class="chart-container">
+                            <div class="chart-header">
+                                <h2>Monthly Activity</h2>
+                                <select class="form-control" style="width: auto;">
+                                    <option>Last 30 days</option>
+                                    <option>Last 90 days</option>
+                                    <option>2025</option>
+                                </select>
+                            </div>
+                            <canvas id="activityChart" height="250"></canvas>
+                        </div>
+                        
+                        <div class="transactions-container">
+                            <div class="transaction-header">
+                                <h2>Recent Transactions</h2>
+                                <a href="#" class="link" onclick="showPage('transactions-page')">View All</a>
+                            </div>
+                            
+                            <ul class="transaction-list">
+                                <li class="transaction-item credit">
+                                    <div class="transaction-info">
+                                        <div class="transaction-icon">
+                                            <i class="fas fa-arrow-down"></i>
+                                        </div>
+                                        <div class="transaction-details">
+                                            <h3>Account Funding</h3>
+                                            <p>Jul 03, 2025 • Fund Wallet</p>
+                                        </div>
+                                    </div>
+                                    <div class="transaction-amount">+$3,200,000.00</div>
+                                </li>
+                                
+                                <li class="transaction-item debit">
+                                    <div class="transaction-info">
+                                        <div class="transaction-icon">
+                                            <i class="fas fa-arrow-up"></i>
+                                        </div>
+                                        <div class="transaction-details">
+                                            <h3>Transfer to John Doe</h3>
+                                            <p>Jul 02, 2025 • Business Deal</p>
+                                        </div>
+                                    </div>
+                                    <div class="transaction-amount">-$5,000.00</div>
+                                </li>
+                                
+                                <li class="transaction-item credit">
+                                    <div class="transaction-info">
+                                        <div class="transaction-icon">
+                                            <i class="fas fa-arrow-down"></i>
+                                        </div>
+                                        <div class="transaction-details">
+                                            <h3>Salary Deposit</h3>
+                                            <p>Jul 01, 2025 • Company Inc.</p>
+                                        </div>
+                                    </div>
+                                    <div class="transaction-amount">+$12,500.00</div>
+                                </li>
+                                
+                                <li class="transaction-item debit">
+                                    <div class="transaction-info">
+                                        <div class="transaction-icon">
+                                            <i class="fas fa-arrow-up"></i>
+                                        </div>
+                                        <div class="transaction-details">
+                                            <h3>Online Shopping</h3>
+                                            <p>Jun 28, 2025 • Amazon</p>
+                                        </div>
+                                    </div>
+                                    <div class="transaction-amount">-$1,250.75</div>
+                                </li>
+                            </ul>
+                        </div>
+                    </div>
+                </div>
+                
+                <!-- Fund Account -->
+                <div id="fund-page" class="page">
+                    <div class="content">
+                        <div class="form-container">
+                            <div class="form-header">
+                                <h2>Fund Your Account</h2>
+                                <p>Add money to your Transfuture Bank account</p>
+                            </div>
+                            
+                            <div class="form-group">
+                                <label>Funding Method</label>
+                                <select class="form-control">
+                                    <option>Bank Transfer</option>
+                                    <option>Credit/Debit Card</option>
+                                    <option>Cryptocurrency</option>
+                                    <option>International Wire</option>
+                                </select>
+                            </div>
+                            
+                            <div class="form-group">
+                                <label>Amount (USD)</label>
+                                <input type="text" class="form-control" value="3,200,000.00" readonly>
+                            </div>
+                            
+                            <div class="form-group">
+                                <label>Source of Funds</label>
+                                <input type="text" class="form-control" placeholder="Business Revenue, Investment, etc.">
+                            </div>
+                            
+                            <div class="form-group">
+                                <label>Transaction Reference</label>
+                                <input type="text" class="form-control" placeholder="Enter reference number">
+                            </div>
+                            
+                            <div class="form-footer">
+                                <button class="btn" onclick="showPage('dashboard-page')">Cancel</button>
+                                <button class="btn btn-primary" onclick="fundAccount()">Fund Account</button>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+                
+                <!-- Transfer Money -->
+                <div id="transfer-page" class="page">
+                    <div class="content">
+                        <div class="form-container">
+                            <div class="form-header">
+                                <h2>Transfer Money</h2>
+                                <p>Send money to other Transfuture Bank accounts</p>
+                            </div>
+                            
+                            <div class="form-group">
+                                <label>Recipient Email</label>
+                                <input type="email" class="form-control" placeholder="Enter recipient's email" id="recipient-email">
+                                <div class="mt-1" style="font-size: 0.85rem; color: var(--gray);">Recipient must have a Transfuture Bank account</div>
+                            </div>
+                            
+                            <div class="form-group">
+                                <label>Amount (USD)</label>
+                                <input type="number" class="form-control" placeholder="0.00" id="transfer-amount">
+                                <div class="mt-1" style="font-size: 0.85rem;">
+                                    Available: <span id="available-balance">$3,200,000.00</span>
+                                </div>
+                            </div>
+                            
+                            <div class="form-group">
+                                <label>Narration</label>
+                                <input type="text" class="form-control" placeholder="Purpose of transfer" id="transfer-narration">
+                            </div>
+                            
+                            <div class="form-group">
+                                <label>Security PIN</label>
+                                <input type="password" class="form-control" placeholder="Enter your 4-digit PIN" maxlength="4">
+                            </div>
+                            
+                            <div class="form-footer">
+                                <button class="btn" onclick="showPage('dashboard-page')">Cancel</button>
+                                <button class="btn btn-primary" onclick="transferMoney()">Transfer Funds</button>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+                
+                <!-- Transactions -->
+                <div id="transactions-page" class="page">
+                    <div class="content">
+                        <div class="transactions-container">
+                            <div class="transaction-header">
+                                <h2>Transaction History</h2>
+                                
+                                <div class="transaction-filters">
+                                    <button class="filter-btn active">All</button>
+                                    <button class="filter-btn">Credit</button>
+                                    <button class="filter-btn">Debit</button>
+                                    <button class="btn btn-sm" style="margin-left: 0.5rem;">
+                                        <i class="fas fa-file-pdf"></i> Export
+                                    </button>
+                                </div>
+                            </div>
+                            
+                            <div class="form-group" style="display: flex; gap: 1rem; margin-bottom: 1.5rem;">
+                                <div style="flex: 1;">
+                                    <label>From Date</label>
+                                    <input type="date" class="form-control" value="2025-06-01">
+                                </div>
+                                <div style="flex: 1;">
+                                    <label>To Date</label>
+                                    <input type="date" class="form-control" value="2025-07-04">
+                                </div>
+                                <div style="flex: 1; align-self: flex-end;">
+                                    <button class="btn btn-primary btn-block">Filter</button>
+                                </div>
+                            </div>
+                            
+                            <ul class="transaction-list">
+                                <!-- Transactions will be loaded here -->
+                            </ul>
+                        </div>
+                    </div>
+                </div>
+                
+                <!-- Admin Panel -->
+                <div id="admin-page" class="page">
+                    <div class="content">
+                        <h1 style="margin-bottom: 1.5rem;">Admin Control Panel</h1>
+                        
+                        <div class="admin-grid">
+                            <div class="admin-card">
+                                <h3>User Management</h3>
+                                <ul class="user-list">
+                                    <li class="user-item">
+                                        <div class="user-avatar">EW</div>
+                                        <div class="user-details">
+                                            <div class="name">Ekene Wilson</div>
+                                            <div class="email">ekene@example.com</div>
+                                        </div>
+                                        <div class="user-balance">$3.2M</div>
+                                        <div class="admin-actions">
+                                            <button class="btn btn-sm">View</button>
+                                        </div>
+                                    </li>
+                                    <li class="user-item">
+                                        <div class="user-avatar">JD</div>
+                                        <div class="user-details">
+                                            <div class="name">John Doe</div>
+                                            <div class="email">john@example.com</div>
+                                        </div>
+                                        <div class="user-balance">$45,600</div>
+                                        <div class="admin-actions">
+                                            <button class="btn btn-sm">View</button>
+                                            <button class="btn btn-sm btn-danger">Suspend</button>
+                                        </div>
+                                    </li>
+                                    <li class="user-item">
+                                        <div class="user-avatar">SJ</div>
+                                        <div class="user-details">
+                                            <div class="name">Sarah Johnson</div>
+                                            <div class="email">sarah@example.com</div>
+                                        </div>
+                                        <div class="user-balance">$128,400</div>
+                                        <div class="admin-actions">
+                                            <button class="btn btn-sm">View</button>
+                                        </div>
+                                    </li>
+                                    <li class="user-item">
+                                        <div class="user-avatar">MB</div>
+                                        <div class="user-details">
+                                            <div class="name">Mike Brown</div>
+                                            <div class="email">mike@example.com</div>
+                                        </div>
+                                        <div class="user-balance">$82,150</div>
+                                        <div class="admin-actions">
+                                            <button class="btn btn-sm">View</button>
+                                            <button class="btn btn-sm btn-danger">Suspend</button>
+                                        </div>
+                                    </li>
+                                </ul>
+                            </div>
+                            
+                            <div class="admin-card">
+                                <h3>System Overview</h3>
+                                <div style="margin-bottom: 1.5rem;">
+                                    <div style="display: flex; justify-content: space-between; margin-bottom: 0.5rem;">
+                                        <span>Total Users:</span>
+                                        <strong>1,258</strong>
+                                    </div>
+                                    <div style="display: flex; justify-content: space-between; margin-bottom: 0.5rem;">
+                                        <span>Active Today:</span>
+                                        <strong>387</strong>
+                                    </div>
+                                    <div style="display: flex; justify-content: space-between; margin-bottom: 0.5rem;">
+                                        <span>Transactions (24h):</span>
+                                        <strong>2,451</strong>
+                                    </div>
+                                    <div style="display: flex; justify-content: space-between; margin-bottom: 0.5rem;">
+                                        <span>Total Assets:</span>
+                                        <strong>$4.2B</strong>
+                                    </div>
+                                </div>
+                                
+                                <h3>Recent Activity</h3>
+                                <ul class="user-list">
+                                    <li class="user-item">
+                                        <div style="flex: 1;">
+                                            <div class="name">New user registered</div>
+                                            <div class="email">emma@example.com</div>
+                                        </div>
+                                        <div class="log-time">2 mins ago</div>
+                                    </li>
+                                    <li class="user-item">
+                                        <div style="flex: 1;">
+                                            <div class="name">Large transfer processed</div>
+                                            <div class="email">$250,000 • ekene@example.com</div>
+                                        </div>
+                                        <div class="log-time">15 mins ago</div>
+                                    </li>
+                                    <li class="user-item">
+                                        <div style="flex: 1;">
+                                            <div class="name">System maintenance</div>
+                                            <div class="email">Completed successfully</div>
+                                        </div>
+                                        <div class="log-time">1 hour ago</div>
+                                    </li>
+                                </ul>
+                            </div>
+                        </div>
+                        
+                        <div class="admin-card">
+                            <h3>Transaction Monitoring</h3>
+                            <div style="overflow-x: auto;">
+                                <table style="width: 100%; border-collapse: collapse;">
+                                    <thead>
+                                        <tr style="background: var(--light-gray);">
+                                            <th style="padding: 0.75rem; text-align: left;">ID</th>
+                                            <th style="padding: 0.75rem; text-align: left;">User</th>
+                                            <th style="padding: 0.75rem; text-align: left;">Type</th>
+                                            <th style="padding: 0.75rem; text-align: left;">Amount</th>
+                                            <th style="padding: 0.75rem; text-align: left;">Date</th>
+                                            <th style="padding: 0.75rem; text-align: left;">Status</th>
+                                            <th style="padding: 0.75rem; text-align: left;">Actions</th>
+                                        </tr>
+                                    </thead>
+                                    <tbody>
+                                        <tr style="border-bottom: 1px solid var(--light-gray);">
+                                            <td style="padding: 0.75rem;">TXN789012</td>
+                                            <td style="padding: 0.75rem;">ekene@example.com</td>
+                                            <td style="padding: 0.75rem;">Credit</td>
+                                            <td style="padding: 0.75rem;">$3,200,000.00</td>
+                                            <td style="padding: 0.75rem;">Jul 03, 2025</td>
+                                            <td style="padding: 0.75rem;"><span style="color: var(--success);">Successful</span></td>
+                                            <td style="padding: 0.75rem;">
+                                                <button class="btn btn-sm">View</button>
+                                            </td>
+                                        </tr>
+                                        <tr style="border-bottom: 1px solid var(--light-gray);">
+                                            <td style="padding: 0.75rem;">TXN345678</td>
+                                            <td style="padding: 0.75rem;">john@example.com</td>
+                                            <td style="padding: 0.75rem;">Debit</td>
+                                            <td style="padding: 0.75rem;">$5,000.00</td>
+                                            <td style="padding: 0.75rem;">Jul 02, 2025</td>
+                                            <td style="padding: 0.75rem;"><span style="color: var(--success);">Successful</span></td>
+                                            <td style="padding: 0.75rem;">
+                                                <button class="btn btn-sm">View</button>
+                                            </td>
+                                        </tr>
+                                        <tr style="border-bottom: 1px solid var(--light-gray);">
+                                            <td style="padding: 0.75rem;">TXN901234</td>
+                                            <td style="padding: 0.75rem;">mike@example.com</td>
+                                            <td style="padding: 0.75rem;">Debit</td>
+                                            <td style="padding: 0.75rem;">$12,500.00</td>
+                                            <td style="padding: 0.75rem;">Jul 01, 2025</td>
+                                            <td style="padding: 0.75rem;"><span style="color: var(--danger);">Failed</span></td>
+                                            <td style="padding: 0.75rem;">
+                                                <button class="btn btn-sm">View</button>
+                                                <button class="btn btn-sm btn-success">Retry</button>
+                                            </td>
+                                        </tr>
+                                    </tbody>
+                                </table>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+                
+                <!-- Settings -->
+                <div id="settings-page" class="page">
+                    <div class="content">
+                        <div class="settings-grid">
+                            <div class="settings-menu">
+                                <ul class="nav">
+                                    <li class="nav-item">
+                                        <a href="#" class="nav-link active">
+                                            <i class="fas fa-user"></i>
+                                            <span class="nav-text">Profile</span>
+                                        </a>
+                                    </li>
+                                    <li class="nav-item">
+                                        <a href="#" class="nav-link">
+                                            <i class="fas fa-lock"></i>
+                                            <span class="nav-text">Security</span>
+                                        </a>
+                                    </li>
+                                    <li class="nav-item">
+                                        <a href="#" class="nav-link">
+                                            <i class="fas fa-bell"></i>
+                                            <span class="nav-text">Notifications</span>
+                                        </a>
+                                    </li>
+                                    <li class="nav-item">
+                                        <a href="#" class="nav-link">
+                                            <i class="fas fa-shield-alt"></i>
+                                            <span class="nav-text">Privacy</span>
+                                        </a>
+                                    </li>
+                                </ul>
+                            </div>
+                            
+                            <div class="settings-content">
+                                <h2 style="margin-bottom: 1.5rem;">Profile Settings</h2>
+                                
+                                <div class="avatar-upload">
+                                    <div class="avatar-large">EW</div>
+                                    <div>
+                                        <h3>Ekene Wilson</h3>
+                                        <p>Premium Banking Member</p>
+                                        <div class="avatar-actions">
+                                            <button class="btn">Change Photo</button>
+                                            <button class="btn">Remove</button>
+                                        </div>
+                                    </div>
+                                </div>
+                                
+                                <div class="form-group">
+                                    <label>Full Name</label>
+                                    <input type="text" class="form-control" value="Ekene Wilson">
+                                </div>
+                                
+                                <div class="form-group">
+                                    <label>Email Address</label>
+                                    <input type="email" class="form-control" value="ekene@example.com" readonly>
+                                </div>
+                                
+                                <div class="form-group">
+                                    <label>Phone Number</label>
+                                    <input type="tel" class="form-control" value="+1 (234) 567-8901">
+                                </div>
+                                
+                                <div class="form-group">
+                                    <label>Address</label>
+                                    <input type="text" class="form-control" value="123 Financial District, Enugu">
+                                </div>
+                                
+                                <div class="form-footer">
+                                    <button class="btn">Cancel</button>
+                                    <button class="btn btn-primary">Save Changes</button>
+                                </div>
+                                
+                                <div style="margin-top: 3rem;">
+                                    <h3 style="margin-bottom: 1rem;">Security Logs</h3>
+                                    
+                                    <div class="security-log">
+                                        <div class="log-icon">
+                                            <i class="fas fa-lock"></i>
+                                        </div>
+                                        <div class="log-details">
+                                            <h4>Password Changed</h4>
+                                            <p>Your password was updated successfully</p>
+                                        </div>
+                                        <div class="log-time">Today, 09:15 AM</div>
+                                    </div>
+                                    
+                                    <div class="security-log">
+                                        <div class="log-icon">
+                                            <i class="fas fa-map-marker-alt"></i>
+                                        </div>
+                                        <div class="log-details">
+                                            <h4>Login from new location</h4>
+                                            <p>Enugu, Nigeria (IP: 197.210.76.45)</p>
+                                        </div>
+                                        <div class="log-time">Today, 09:15 AM</div>
+                                    </div>
+                                    
+                                    <div class="security-log">
+                                        <div class="log-icon">
+                                            <i class="fas fa-shield-alt"></i>
+                                        </div>
+                                        <div class="log-details">
+                                            <h4>Two-factor enabled</h4>
+                                            <p>Authenticator app method added</p>
+                                        </div>
+                                        <div class="log-time">Jun 28, 2025</div>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+    
+    <!-- Toast Notification -->
+    <div id="toast" class="toast">
+        <i class="fas fa-check-circle"></i>
+        <div class="toast-content">Transaction successful!</div>
+        <div class="toast-close" onclick="hideToast()">
+            <i class="fas fa-times"></i>
+        </div>
+    </div>
+    
+    <script>
+        // Fake database simulation
+        const fakeDB = {
+            currentUser: null,
+            users: [
+                {
+                    id: "USR001",
+                    email: "ekene@example.com",
+                    password: "Password123", // In a real app, this would be hashed
+                    name: "Ekene Wilson",
+                    balance: 3200000,
+                    transactions: [
+                        {
+                            id: "TXN123456",
+                            type: "credit",
+                            source: "Fund Wallet",
+                            amount: 3200000,
+                            status: "Successful",
+                            date: "2025-07-03T08:32:00Z",
+                            narration: "Account funding"
+                        },
+                        {
+                            id: "TXN789012",
+                            type: "debit",
+                            source: "John Doe",
+                            amount: 5000,
+                            status: "Successful",
+                            date: "2025-07-02T14:15:00Z",
+                            narration: "Business deal"
+                        },
+                        {
+                            id: "TXN345678",
+                            type: "credit",
+                            source: "Company Inc.",
+                            amount: 12500,
+                            status: "Successful",
+                            date: "2025-07-01T09:00:00Z",
+                            narration: "Salary deposit"
+                        }
+                    ],
+                    loginLogs: [
+                        { date: "2025-07-04T09:15:00Z", location: "Enugu, Nigeria" }
+                    ],
+                    role: "user",
+                    avatar: "EW",
+                    mobilePin: "1234",
+                    notifications: true
+                },
+                {
+                    id: "USR002",
+                    email: "admin@transfuture.com",
+                    password: "AdminPass456",
+                    name: "Admin User",
+                    balance: 0,
+                    transactions: [],
+                    loginLogs: [],
+                    role: "admin",
+                    avatar: "AU",
+                    mobilePin: "4321",
+                    notifications: true
+                }
+            ]
+        };
+        
+        // Page navigation
+        function showPage(pageId) {
+            document.querySelectorAll('.page').forEach(page => {
+                page.classList.remove('active');
+            });
+            document.getElementById(pageId).classList.add('active');
+        }
+        
+        // Login function
+        function login() {
+            const email = document.getElementById('email').value;
+            const password = document.getElementById('password').value;
+            
+            // Find user
+            const user = fakeDB.users.find(u => u.email === email && u.password === password);
+            
+            if (user) {
+                // Simulate JWT token storage
+                localStorage.setItem('tf_token', JSON.stringify({
+                    email: user.email,
+                    id: user.id,
+                    role: user.role
+                }));
+                
+                fakeDB.currentUser = user;
+                
+                // Redirect to dashboard
+                showPage('app');
+                
+                // Initialize dashboard
+                initDashboard();
+            } else {
+                alert('Invalid email or password');
+            }
+        }
+        
+        // Register function
+        function register() {
+            const name = document.getElementById('reg-name').value;
+            const email = document.getElementById('reg-email').value;
+            const password = document.getElementById('reg-password').value;
+            const confirm = document.getElementById('reg-confirm').value;
+            
+            if (password !== confirm) {
+                alert('Passwords do not match');
+                return;
+            }
+            
+            if (!name || !email || !password) {
+                alert('Please fill in all fields');
+                return;
+            }
+            
+            // Check if email already exists
+            if (fakeDB.users.some(u => u.email === email)) {
+                alert('Email already registered');
+                return;
+            }
+            
+            // Create new user
+            const newUser = {
+                id: "USR" + (fakeDB.users.length + 1).toString().padStart(3, '0'),
+                email,
+                password,
+                name,
+                balance: 0,
+                transactions: [],
+                loginLogs: [{ date: new Date().toISOString(), location: "Unknown" }],
+                role: "user",
+                avatar: name.split(' ').map(n => n[0]).join(''),
+                mobilePin: "0000",
+                notifications: true
+            };
+            
+            fakeDB.users.push(newUser);
+            fakeDB.currentUser = newUser;
+            
+            // Simulate token storage
+            localStorage.setItem('tf_token', JSON.stringify({
+                email: newUser.email,
+                id: newUser.id,
+                role: newUser.role
+            }));
+            
+            // Show success message and redirect
+            showToast('Account created successfully!', 'success');
+            setTimeout(() => showPage('app'), 1500);
+        }
+        
+        // Logout function
+        function logout() {
+            localStorage.removeItem('tf_token');
+            fakeDB.currentUser = null;
+            showPage('login-page');
+        }
+        
+        // Initialize dashboard
+        function initDashboard() {
+            // Activity chart
+            const ctx = document.getElementById('activityChart').getContext('2d');
+            const chart = new Chart(ctx, {
+                type: 'line',
+                data: {
+                    labels: ['Jun 1', 'Jun 8', 'Jun 15', 'Jun 22', 'Jun 29', 'Jul 6'],
+                    datasets: [{
+                        label: 'Account Balance (USD)',
+                        data: [12000, 19000, 30000, 50000, 2000000, 3200000],
+                        borderColor: '#1a3a8f',
+                        backgroundColor: 'rgba(26, 58, 143, 0.1)',
+                        borderWidth: 2,
+                        fill: true,
+                        tension: 0.4
+                    }]
+                },
+                options: {
+                    responsive: true,
+                    plugins: {
+                        legend: {
+                            display: false
+                        }
+                    },
+                    scales: {
+                        y: {
+                            beginAtZero: true,
+                            grid: {
+                                color: 'rgba(0, 0, 0, 0.05)'
+                            },
+                            ticks: {
+                                callback: function(value) {
+                                    if (value >= 1000000) {
+                                        return '$' + (value/1000000).toFixed(1) + 'M';
+                                    } else if (value >= 1000) {
+                                        return '$' + (value/1000).toFixed(0) + 'K';
+                                    }
+                                    return '$' + value;
+                                }
+                            }
+                        },
+                        x: {
+                            grid: {
+                                display: false
+                            }
+                        }
+                    }
+                }
+            });
+        }
+        
+        // Fund account function
+        function fundAccount() {
+            // Create new transaction
+            const newTransaction = {
+                id: "TXN" + Math.floor(100000 + Math.random() * 900000),
+                type: "credit",
+                source: "Fund Wallet",
+                amount: 3200000,
+                status: "Successful",
+                date: new Date().toISOString(),
+                narration: "Account funding"
+            };
+            
+            // Add to user's transactions
+            fakeDB.currentUser.transactions.unshift(newTransaction);
+            
+            // Update balance
+            fakeDB.currentUser.balance += 3200000;
+            
+            // Show success message
+            showToast('Account funded successfully! $3,200,000 added to your balance.', 'success');
+            
+            // Redirect to dashboard
+            setTimeout(() => showPage('dashboard-page'), 2000);
+        }
+        
+        // Transfer money function
+        function transferMoney() {
+            const amount = parseFloat(document.getElementById('transfer-amount').value);
+            const recipientEmail = document.getElementById('recipient-email').value;
+            const narration = document.getElementById('transfer-narration').value;
+            
+            if (!amount || amount <= 0) {
+                showToast('Please enter a valid amount', 'error');
+                return;
+            }
+            
+            if (amount > fakeDB.currentUser.balance) {
+                showToast('Insufficient funds', 'error');
+                return;
+            }
+            
+            if (!recipientEmail) {
+                showToast('Please enter recipient email', 'error');
+                return;
+            }
+            
+            // Create transactions
+            const txId = "TXN" + Math.floor(100000 + Math.random() * 900000);
+            const date = new Date().toISOString();
+            
+            // Debit transaction for sender
+            const debitTx = {
+                id: txId,
+                type: "debit",
+                source: `Transfer to ${recipientEmail}`,
+                amount: amount,
+                status: "Successful",
+                date: date,
+                narration: narration
+            };
+            
+            // Credit transaction for recipient (simulated)
+            const creditTx = {
+                id: txId,
+                type: "credit",
+                source: `Transfer from ${fakeDB.currentUser.email}`,
+                amount: amount,
+                status: "Successful",
+                date: date,
+                narration: narration
+            };
+            
+            // Update sender
+            fakeDB.currentUser.transactions.unshift(debitTx);
+            fakeDB.currentUser.balance -= amount;
+            
+            // Show success
+            showToast(`Transfer of $${amount.toLocaleString()} to ${recipientEmail} successful!`, 'success');
+            
+            // Redirect to dashboard
+            setTimeout(() => showPage('dashboard-page'), 2000);
+        }
+        
+        // Toast notification functions
+        function showToast(message, type = 'success') {
+            const toast = document.getElementById('toast');
+            const icon = toast.querySelector('i');
+            const content = toast.querySelector('.toast-content');
+            
+            // Set content and style
+            content.textContent = message;
+            toast.className = `toast ${type}`;
+            
+            // Show toast
+            setTimeout(() => {
+                toast.classList.add('show');
+            }, 100);
+            
+            // Auto hide after 5 seconds
+            setTimeout(hideToast, 5000);
+        }
+        
+        function hideToast() {
+            const toast = document.getElementById('toast');
+            toast.classList.remove('show');
+        }
+        
+        // Check if user is logged in on page load
+        window.onload = function() {
+            const token = localStorage.getItem('tf_token');
+            if (token) {
+                try {
+                    const tokenData = JSON.parse(token);
+                    const user = fakeDB.users.find(u => u.email === tokenData.email);
+                    if (user) {
+                        fakeDB.currentUser = user;
+                        showPage('app');
+                        initDashboard();
+                        return;
+                    }
+                } catch (e) {
+                    console.error('Invalid token');
+                }
+            }
+            showPage('login-page');
+        };
+    </script>
+</body>
+</html>
